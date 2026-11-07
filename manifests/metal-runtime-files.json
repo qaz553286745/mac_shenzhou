@@ -1,0 +1,19 @@
+{
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/Info.plist": "440bb37a877ba472df7f9f283d85ad7306e8e71844ab1642a391ffce6099e9c5",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/MacOS/NVIDIAShared": "7dda95a2b437438a222b5d5305d2c1094737bdd1493670d6587a418cfb8e9bf4",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/air2nvvm.py": "571450f7279b930af28467726398d821d4db1a2007cf7b1ccdfb05d5b845bb95",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/libLLVM.dylib": "2a6d807ce8f3a3ab772e8f861ff40cff63363b90ee1d80ca7e289147b39405aa",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/libnvidia-nvvm.nocanary.so": "993f398aa62575d021d8e1a864c7b375396a50fec6f97c62e79dd4b17c8bfce1",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/libnvidia-ptxjitcompiler.so.610.57.04": "0df88a5dc3c2effdd3f895f664572c8a7485152fa1db134db8fcdaf80d4fbc7d",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/libzstd.1.dylib": "afd5adc5ce9592369b1067f8bcf1ba8b7ea5b75e752e4edadd4a0f254fcdb6d0",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/nvcompile.sh": "285d86bf7ccae4f89c86def3cda80efb33c948fadf57828c0cbd04e384389945",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/PlugIns/nvvmdrive": "6ffa7f740f810f800ffa0c6fa98cb4f495a7e86251bf8b061065ab93a39f7a92",
+  "Library/GPUBundles/NVIDIAShared.bundle/Contents/_CodeSignature/CodeResources": "abca0de898ab0d2acc4c58662e9cc47233318a35e818605c90c052e6e8bca7ed",
+  "Library/GPUBundles/nvmtl/air-opt": "8c41049c46b4c4fe1fa3bf0746aa0754ca7f18d23a1b98985dca9e088fc26922",
+  "Library/GPUBundles/nvmtl/libvulkan.1.4.362.dylib": "dc81d04917bd1aad88b2ec150ff3150f44dd24b786b227874492aae62e7c9c6e",
+  "Library/GPUBundles/nvmtl/libvulkan_nouveau.dylib": "58f1bf7961df16c0a30609e24a61a9294477d5a6f87d7011b54a199112cc37e5",
+  "Library/GPUBundles/nvmtl/libvulkan_nouveau.dylib.syms": "10170125bf4c28c6a5790874fa304187aea1095d370c833aa0545955ec6d2c6d",
+  "Library/GPUBundles/nvmtl/nvk_icd.json": "c05265f755006adcc34abcd2cb6def1eeb95d46a6246c3f207d76fae16c17448",
+  "Library/GPUBundles/nvmtl/nvrm610.conf": "2e0c42d95dc7b28162003b910b179921279867b8f59ee143f540d3e189526a2f",
+  "Library/GPUBundles/nvmtl-allow.txt": "8442c730ae5eb53e344b53fab3337d8adf849b788ea6d76ca29c1752a0b0755b"
+}

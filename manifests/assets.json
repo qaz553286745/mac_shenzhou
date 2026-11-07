@@ -1,0 +1,89 @@
+[
+  {
+    "name": "efi",
+    "layout": "efi",
+    "bytes": 32815597,
+    "sha256": "1a47de5d96aea4c02d38e5cdc1cd4da23f2ecf5125498b7830e73066d8754dce",
+    "parts": [
+      {
+        "file": "assets/efi.tar.gz.part000",
+        "bytes": 32815597,
+        "sha256": "1a47de5d96aea4c02d38e5cdc1cd4da23f2ecf5125498b7830e73066d8754dce"
+      }
+    ]
+  },
+  {
+    "name": "nvidia-sdr",
+    "layout": "stable",
+    "bytes": 146505233,
+    "sha256": "dfcc6fdc4677c7e175cbd079ff7373d0952cccabfa3a38e2419a5f183fa21c9b",
+    "parts": [
+      {
+        "file": "assets/nvidia-sdr.tar.gz.part000",
+        "bytes": 33554432,
+        "sha256": "fdf008e2994767f4de49cdcbfb942d0f310f10cba9f72ad1447313b35346cd3a"
+      },
+      {
+        "file": "assets/nvidia-sdr.tar.gz.part001",
+        "bytes": 33554432,
+        "sha256": "2c604f6766207807311ea7b0c4cb6754ecd91a96f331382c4588a000df3afae1"
+      },
+      {
+        "file": "assets/nvidia-sdr.tar.gz.part002",
+        "bytes": 33554432,
+        "sha256": "2ace327570a566363ec3744a78d6e86d9fcf92fc323f50b8f1998749f5ee2b54"
+      },
+      {
+        "file": "assets/nvidia-sdr.tar.gz.part003",
+        "bytes": 33554432,
+        "sha256": "9e0487b743320c3f793435eba8992c977a679fec7919ec5c80c6a79318a4e393"
+      },
+      {
+        "file": "assets/nvidia-sdr.tar.gz.part004",
+        "bytes": 12287505,
+        "sha256": "28c47ff86fd312e9c720b1484e3cb367c7575f1ef37cd2f3df620670f5fa3614"
+      }
+    ]
+  },
+  {
+    "name": "metal-runtime",
+    "layout": "runtime",
+    "bytes": 116958500,
+    "sha256": "15db7126f88d4d2ab1b271feb0fe8c3d8faae06f72977512c2f62f1c56e03b3c",
+    "parts": [
+      {
+        "file": "assets/metal-runtime.tar.gz.part000",
+        "bytes": 33554432,
+        "sha256": "eef1585e440884339ec6731db8bd47fc99f3dcab8f5bc229ef4bd611307409a4"
+      },
+      {
+        "file": "assets/metal-runtime.tar.gz.part001",
+        "bytes": 33554432,
+        "sha256": "e8918239bd3579b9e447460543f15aabd178a6be7a27de48b66aa95356ecb24c"
+      },
+      {
+        "file": "assets/metal-runtime.tar.gz.part002",
+        "bytes": 33554432,
+        "sha256": "28c8c55722b4c006487738c8853ecc54ece7f29b543672cc375e5f9e7d91692a"
+      },
+      {
+        "file": "assets/metal-runtime.tar.gz.part003",
+        "bytes": 16295204,
+        "sha256": "53200a078ed9dfb6015be129382f5d201954e3cd1ec11769b7cf726cdc97707a"
+      }
+    ]
+  },
+  {
+    "name": "audio-optional",
+    "layout": "audio",
+    "bytes": 121561,
+    "sha256": "e2e950c3b2c7356ea60c2d85d3cfcb09c555953b86d2b8853cabc68508b1ee89",
+    "parts": [
+      {
+        "file": "assets/audio-optional.tar.gz.part000",
+        "bytes": 121561,
+        "sha256": "e2e950c3b2c7356ea60c2d85d3cfcb09c555953b86d2b8853cabc68508b1ee89"
+      }
+    ]
+  }
+]

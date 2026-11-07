@@ -1,0 +1,76 @@
+diff --git a/kexts/NVRMFB/fb/nvrm-fb.cpp b/kexts/NVRMFB/fb/nvrm-fb.cpp
+index 51b8110..8589c18 100644
+--- a/kexts/NVRMFB/fb/nvrm-fb.cpp
++++ b/kexts/NVRMFB/fb/nvrm-fb.cpp
+@@ -384,6 +384,9 @@ class NVRMNVDAFramebuffer : public IOFramebuffer {
+     UInt32 fCurTransform = 0;
+     SInt32 fCurHotX = 0, fCurHotY = 0, fCurTurnedHotX = 0, fCurTurnedHotY = 0;
+     UInt32 fTransform = 0;
++    // Only withdraw the rotation table we published, never a user's HiDPI override.
++    OSObject *fSavedScaleResolutions = nullptr;
++    OSObject *fPublishedScaleResolutions = nullptr;
+     volatile UInt32 fServerFresh = 0;
+     IOReturn newUserClient(task_t owningTask, void *securityID, UInt32 type, IOUserClient **handler) override;
+     void publishStartupTiming();
+@@ -2880,6 +2883,8 @@ IOReturn NVRMNVDAFramebuffer::getAppleSense(IOIndex connectIndex, UInt32 *senseT
+ 
+ void NVRMNVDAFramebuffer::free()
+ {
++    OSSafeReleaseNULL(fSavedScaleResolutions);
++    OSSafeReleaseNULL(fPublishedScaleResolutions);
+     if (fFlipCacheLock) { IOSimpleLockFree(fFlipCacheLock); fFlipCacheLock = nullptr; }
+     if (fCurStateLock) { IOSimpleLockFree(fCurStateLock); fCurStateLock = nullptr; }
+     fConsKva = nullptr; OSSafeReleaseNULL(fConsMap); OSSafeReleaseNULL(fConsMem);
+@@ -2962,15 +2967,26 @@ void NVRMNVDAFramebuffer::publishRotatedSizes(bool force)
+         return;
+     }
+     const bool want = (fTransform & kIOScaleSwapAxes) && fBootW && fBootH;
+-    const bool have = attrs->getObject("scale-resolutions") != nullptr;
+-    if ((!want && !have) || (want && have && !force)) { attrs->release(); return; }
++    OSObject *original = attrs->getObject("scale-resolutions");
++    // Another display tool may have replaced our table. Relinquish ownership instead of
++    // restoring stale state over its new configuration.
++    if (fPublishedScaleResolutions && original != fPublishedScaleResolutions) {
++        OSSafeReleaseNULL(fSavedScaleResolutions);
++        OSSafeReleaseNULL(fPublishedScaleResolutions);
++    }
++    const bool owned = fPublishedScaleResolutions != nullptr;
++    if ((!want && !owned) || (want && owned && original && !force)) { attrs->release(); return; }
+     OSDictionary *d = OSDictionary::withDictionary(attrs);
++    if (original) original->retain();
+     attrs->release();
+-    if (!d) return;
+-    if (!want) d->removeObject("scale-resolutions");
++    if (!d) { OSSafeReleaseNULL(original); return; }
++    if (!want) {
++        if (fSavedScaleResolutions) d->setObject("scale-resolutions", fSavedScaleResolutions);
++        else d->removeObject("scale-resolutions");
++    }
+     else {
+         OSArray *a = OSArray::withCapacity(2);
+-        if (!a) { d->release(); return; }
++        if (!a) { d->release(); OSSafeReleaseNULL(original); return; }
+         const NvU32 sizes[2][2] = { { fBootW, fBootH }, { fRasterW, fRasterH } };
+         for (unsigned i = 0; i < 2; i++) {
+             if (!sizes[i][0] || !sizes[i][1] || (i && sizes[i][0] == sizes[0][0] && sizes[i][1] == sizes[0][1])) continue;
+@@ -2982,7 +2998,19 @@ void NVRMNVDAFramebuffer::publishRotatedSizes(bool force)
+         d->setObject("scale-resolutions", a);
+         a->release();
+     }
+-    disp->setProperty("IODisplayAttributes", d);
++    if (!disp->setProperty("IODisplayAttributes", d)) {
++        d->release(); OSSafeReleaseNULL(original); return;
++    }
++    if (want) {
++        if (!owned) { fSavedScaleResolutions = original; original = nullptr; }
++        OSSafeReleaseNULL(fPublishedScaleResolutions);
++        fPublishedScaleResolutions = d->getObject("scale-resolutions");
++        if (fPublishedScaleResolutions) fPublishedScaleResolutions->retain();
++    } else {
++        OSSafeReleaseNULL(fSavedScaleResolutions);
++        OSSafeReleaseNULL(fPublishedScaleResolutions);
++    }
++    OSSafeReleaseNULL(original);
+     d->release();
+     if (want) FBLOG("fb%u: scale-resolutions %ux%u%s offered to macOS for the rotated layout (transform 0x%x)", fIndex, fBootW, fBootH,
+                     (fRasterW != fBootW || fRasterH != fBootH) ? " and the current raster" : "", (unsigned)fTransform);

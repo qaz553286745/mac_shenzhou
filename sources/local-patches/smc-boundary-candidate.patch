@@ -1,0 +1,89 @@
+--- a/VirtualSMC/kern_prov.cpp
++++ b/VirtualSMC/kern_prov.cpp
+@@ -178,6 +178,7 @@
+ void VirtualSMCProvider::onKextLoad(KernelPatcher &kp, size_t index, mach_vm_address_t address, size_t size) {
+ 
+ 	if (!firstGeneration && !monitorStart && !monitorEnd && kextAppleSmc.loadIndex == index) {
++		DBGLOG("trace", "HASEE-SMC S01 callback-enter servicingReady=%d", VirtualSMC::isServicingReady());
+ 		DBGLOG("prov", "caught AppleSMC kext %s", kextAppleSmc.id);
+ 
+ 		firstGeneration = VirtualSMC::isServicingReady() && VirtualSMC::isFirstGeneration();
+@@ -210,12 +211,15 @@
+ 			}
+ 		}
+ 
++		DBGLOG("trace", "HASEE-SMC S02 route-stage-complete");
+ 		monitorSmcStart = address;
+ 		monitorSmcEnd = monitorSmcStart + size;
+ 		monitorStart = memoryMaps[AppleSMCBufferMMIO]->getVirtualAddress();
+ 		monitorEnd = monitorStart + SMCProtocolMMIO::WindowSize;
+ 
++		DBGLOG("trace", "HASEE-SMC S03 before-postMmioReady");
+ 		VirtualSMC::postMmioReady();
++		DBGLOG("trace", "HASEE-SMC S04 callback-return");
+ 	}
+ }
+ 
+--- a/VirtualSMC/kern_vsmc.hpp
++++ b/VirtualSMC/kern_vsmc.hpp
+@@ -284,10 +284,16 @@
+ 	static void postMmioReady() {
+ 		bool shouldMmioInit = atomic_load_explicit(&servicingReady, memory_order_acquire);
+ 		atomic_store_explicit(&mmioReady, true, memory_order_release);
++		DBGLOG("trace", "HASEE-SMC M01 mmio-enter servicingReady=%d", shouldMmioInit);
+ 		if (shouldMmioInit && !isFirstGeneration()) {
++			DBGLOG("trace", "HASEE-SMC M02 before-registerService");
+ 			instance->registerService();
++			DBGLOG("trace", "HASEE-SMC M03 after-registerService");
++			DBGLOG("trace", "HASEE-SMC M04 before-publishResource");
+ 			instance->publishResource(VirtualSMCAPI::SubmitPlugin);
++			DBGLOG("trace", "HASEE-SMC M05 after-publishResource");
+ 		}
++		DBGLOG("trace", "HASEE-SMC M06 mmio-return");
+ 	}
+ 
+ 	/**
+--- a/VirtualSMC/kern_vsmc.cpp
++++ b/VirtualSMC/kern_vsmc.cpp
+@@ -40,6 +40,7 @@
+ }
+ 
+ bool VirtualSMC::start(IOService *provider) {
++	DBGLOG("trace", "HASEE-SMC T01 start-enter");
+ 	// Implementing multiple SMC devices results in infinite recursion at least on 10.12
+ 	// This is because AppleSMC.kext unconditionally updates PE_halt_restart pointer with its own function
+ 	// and stores the original function in its start method and has only one global `this` pointer.
+@@ -111,9 +112,15 @@
+ 		return false;
+ 	}
+ 
++	DBGLOG("trace", "HASEE-SMC T02 before-PMinit");
+ 	PMinit();
++	DBGLOG("trace", "HASEE-SMC T03 after-PMinit");
++	DBGLOG("trace", "HASEE-SMC T04 before-joinPMtree");
+ 	provider->joinPMtree(this);
++	DBGLOG("trace", "HASEE-SMC T05 after-joinPMtree");
++	DBGLOG("trace", "HASEE-SMC T06 before-registerPowerDriver");
+ 	registerPowerDriver(this, powerStates, arrsize(powerStates));
++	DBGLOG("trace", "HASEE-SMC T07 after-registerPowerDriver");
+ 
+ 	// We do not need them anymore
+ 	removeProperty("CFBundleIdentifier");
+@@ -163,12 +170,17 @@
+ 		atomic_load_explicit(&mmioReady, memory_order_acquire);
+ 
+ 	if (shouldServicingInit) {
++		DBGLOG("trace", "HASEE-SMC T08 before-registerService");
+ 		registerService();
++		DBGLOG("trace", "HASEE-SMC T09 after-registerService");
++		DBGLOG("trace", "HASEE-SMC T10 before-publishResource");
+ 		publishResource(VirtualSMCAPI::SubmitPlugin);
++		DBGLOG("trace", "HASEE-SMC T11 after-publishResource");
+ 		// Retain ourselves to avoid crashes if lilu is missing (only valid for first gen).
+ 		ADDPR(startSuccess) = true;
+ 	}
+ 
++	DBGLOG("trace", "HASEE-SMC T12 start-return shouldInit=%d", shouldServicingInit);
+ 	DBGLOG("vsmc", "starting up vsmc service (%d) " PRIKADDR, shouldServicingInit, CASTKADDR(this));
+ 
+ 	return true;

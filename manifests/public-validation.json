@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-07",
+  "ocvalidate_version": "1.0.8",
+  "public_profiles_validated": [
+    "stable-sdr-100s",
+    "candidate-sdr-50s",
+    "recovery-igpu-audio-off"
+  ],
+  "split_assets_reassembled": true,
+  "expanded_manifests_verified": true,
+  "sanitized_kext_signatures_verified": [
+    "Lilu",
+    "VirtualSMC",
+    "itlwm",
+    "VoodooHDA optional"
+  ],
+  "stripped_executable_text_unchanged": true,
+  "private_identity_files_ignored": true,
+  "privacy_scan_matches": 0,
+  "repository_single_file_limit_bytes": 33554432,
+  "native_retest_of_sanitized_artifacts_pending": true,
+  "native_retest_of_50_second_wait_pending": true,
+  "system_install_performed_during_repository_preparation": false
+}

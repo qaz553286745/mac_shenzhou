@@ -1,0 +1,31 @@
+[
+  {
+    "bundle": "Lilu",
+    "operation": "remove debug/build symbols and ad-hoc sign",
+    "executable_text_unchanged": true,
+    "sha256": "1084734b6c19a37a78cb6c1be331edf16e130607ea644ce811b3dec46eecc4cc",
+    "native_retest_required": true
+  },
+  {
+    "bundle": "VirtualSMC",
+    "operation": "remove debug/build symbols and ad-hoc sign",
+    "executable_text_unchanged": true,
+    "sha256": "2bc722149b66c41e202428fc147fad64e5b17a303817fd910d48d9d238f6ded3",
+    "native_retest_required": true
+  },
+  {
+    "bundle": "itlwm",
+    "operation": "empty embedded WiFiConfig and ad-hoc sign",
+    "native_retest_required": true
+  },
+  {
+    "bundle": "VoodooHDA optional",
+    "operation": "remove build/debug symbols; ad-hoc sign",
+    "executable_text_unchanged": true,
+    "native_retest_required": true
+  },
+  {
+    "directory": "EFI/OC/HaseeProfiles",
+    "operation": "excluded private historical configurations"
+  }
+]
